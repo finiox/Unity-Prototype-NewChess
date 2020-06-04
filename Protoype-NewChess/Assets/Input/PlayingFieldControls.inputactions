@@ -1,0 +1,33 @@
+{
+    "name": "PlayingField",
+    "maps": [
+        {
+            "name": "PlayField",
+            "id": "ff469d2a-a263-4147-a9aa-001943b5a460",
+            "actions": [
+                {
+                    "name": "SelectTile",
+                    "type": "Button",
+                    "id": "a0145d08-7d36-4cfd-b733-f1a91184f93e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b975fcf9-9280-4470-bef1-3ad9eb0a8d03",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectTile",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
