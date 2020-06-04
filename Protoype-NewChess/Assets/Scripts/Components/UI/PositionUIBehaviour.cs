@@ -10,8 +10,8 @@ public class PositionUIBehaviour : MonoBehaviour
 {
     [SerializeField] Text locationText;
 
-    public void UpdateLocation(Vector2 pos)
+    public void UpdateLocation(Vector3 pos)
     {
-        locationText.text = string.Format("({0}, {1})", pos.x, pos.y);
+        locationText.text = string.Format("({0}, {1}, {2})", pos.x, pos.y, pos.z);
     }
 }

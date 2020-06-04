@@ -11,6 +11,10 @@ public interface IPiece
 
     ActionState CanDoAction(Vector3 pos, Piece other);
 
+    ActionState DoAction(Vector3 pos, Piece other);
+
+    MovementType GetMovementState();
+
     bool MoveToPosition(Vector3 pos);
 
     bool InAttackRange(Vector3 pos);
@@ -20,4 +24,8 @@ public interface IPiece
     int GetAttackRange();
 
     int GetMovementRange();
+
+    void CheckActionOnPiece(Piece other);
+
+    void Hit();
 }

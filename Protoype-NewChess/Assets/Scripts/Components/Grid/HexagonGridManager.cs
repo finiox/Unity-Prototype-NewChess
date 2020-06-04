@@ -30,7 +30,7 @@ public class HexagonGridManager : MonoBehaviour
     // EVENTS
     #region events
 
-    public UntityVector2Event onSelectorPositionChange;
+    public UntityVector3Event onSelectorPositionChange;
     public UnityPieceEvent onSelectedPieceChange;
 
     #endregion
@@ -101,6 +101,7 @@ public class HexagonGridManager : MonoBehaviour
     #region control_listeners
     void OnSelectTile(InputAction.CallbackContext ctx)
     {
+        // TODO: Check who's turn it is, etc
         if (_selectedPiece == null)
         {
             _selectedPiece = GetPieceAtPosition(_hoveredPosition);
@@ -111,11 +112,43 @@ public class HexagonGridManager : MonoBehaviour
         {
             var cell = CellAtPosition(_hoveredPosition);
 
-            if (cell != null && _selectedPiece.MoveToPosition(_hoveredPosition))
+            if (cell != null)
             {
-                _selectedPiece.transform.position = cell.GetWorldPosition();
+                ActionState state = _selectedPiece.DoAction(_hoveredPosition, GetPieceAtPosition(_hoveredPosition));
+                bool didAction = false;
 
-                _selectedPiece = null;
+
+                Debug.Log("DO ACTION " + state.ToString());
+
+                if (state == ActionState.Negative)
+                {
+                    didAction = false;
+                }
+                else if (state == ActionState.Walk)
+                {
+                    _selectedPiece.transform.position = cell.GetWorldPosition();
+
+                    didAction = true;
+                }
+                else if (state == ActionState.Attack)
+                {
+                    didAction = true;
+                }
+                else if (state == ActionState.Range)
+                {
+                    didAction = true;
+                }
+
+                if (didAction)
+                {
+                    foreach (var piece in pieces)
+                    {
+                        if (piece != _selectedPiece)
+                            piece.CheckActionOnPiece(_selectedPiece);
+                    }
+
+                    _selectedPiece = null;
+                }
             }
         }
     }
@@ -138,9 +171,13 @@ public class HexagonGridManager : MonoBehaviour
 
             var meshRenderer = selector.GetComponent<MeshRenderer>();
 
+            Debug.Log("changed");
+
             if (_selectedPiece != null)
             {
                 ActionState state = _selectedPiece.CanDoAction(_hoveredPosition, GetPieceAtPosition(_hoveredPosition));
+
+                Debug.Log(state.ToString());
 
                 if (state == ActionState.Neutral)
                 {

@@ -37,14 +37,37 @@ public abstract class Piece : MonoBehaviour, IPiece
 
     public bool InMovementRange(Vector3 pos)
     {
-        return GetDistance(_currentPosition, pos) <= GetMovementRange();
+        if (GetMovementState() == MovementType.Near)
+        {
+            return GetDistance(_currentPosition, pos) <= GetMovementRange();
+        }
+        else if (GetMovementState() == MovementType.Far)
+        {
+            return (pos.x != _currentPosition.x && pos.y != _currentPosition.y && pos.z == _currentPosition.z)
+                || (pos.x == _currentPosition.x && pos.y != _currentPosition.y && pos.z != _currentPosition.z)
+                || (pos.x != _currentPosition.x && pos.y == _currentPosition.y && pos.z != _currentPosition.z);
+        }
+
+        return false;
     }
+
+    public void Hit()
+    {
+        // TODO: Got hit, remove from board
+        Debug.Log(name + " DIED");
+    }
+
+    public abstract MovementType GetMovementState();
 
     public abstract int GetAttackRange();
 
     public abstract int GetMovementRange();
 
     public abstract ActionState CanDoAction(Vector3 pos, Piece other);
+
+    public abstract ActionState DoAction(Vector3 pos, Piece other);
+
+    public abstract void CheckActionOnPiece(Piece other);
 
     protected float GetDistance(Vector3 a, Vector3 b)
     {
